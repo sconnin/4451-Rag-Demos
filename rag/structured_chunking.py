@@ -54,6 +54,14 @@ def _split_oversized(text: str, max_chars: int = MAX_CHUNK_CHARS,
     return pieces
 
 
+def _truncate_at_word(text: str, max_chars: int = 60) -> str:
+    """Truncate to at most max_chars without cutting a word in half."""
+    if len(text) <= max_chars:
+        return text
+    truncated = text[:max_chars].rsplit(" ", 1)[0]
+    return f"{truncated}…" if truncated else text[:max_chars]
+
+
 def _is_heading(line: str) -> bool:
     """Heuristic: short, no terminal punctuation, not a numbered/lettered clause."""
     if not line or len(line) > 80:
@@ -130,7 +138,7 @@ def parse_sections(text: str) -> list[dict]:
         if m_num:
             section_number, rest = m_num.group(1), m_num.group(2)
             section_title = None
-            path = [title, f"{section_number}. {rest.split('.')[0][:60]}".rstrip()]
+            path = [title, f"{section_number}. {_truncate_at_word(rest.split('.')[0])}".rstrip()]
             units.append({"path": path, "section_number": section_number,
                            "clause_id": None, "text": para})
         elif m_letter and section_number:

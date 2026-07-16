@@ -27,15 +27,15 @@ def load_documents(docs_dir: str, strategy: str = "fixed") -> tuple[list[str], l
             text = f.read()
 
         if strategy == "structured":
-            for i, (chunk, metadata) in enumerate(chunk_document(text, fname)):
-                ids.append(f"{fname}::{i}")
-                docs.append(chunk)
-                metadatas.append(metadata)
+            chunks_with_metadata = chunk_document(text, fname)
         else:
-            for i, chunk in enumerate(chunk_text(text)):
-                ids.append(f"{fname}::{i}")
-                docs.append(chunk)
-                metadatas.append({"source": fname, "chunk": i})
+            chunks_with_metadata = [(chunk, {"source": fname, "chunk": i})
+                                     for i, chunk in enumerate(chunk_text(text))]
+
+        for i, (chunk, metadata) in enumerate(chunks_with_metadata):
+            ids.append(f"{fname}::{i}")
+            docs.append(chunk)
+            metadatas.append(metadata)
 
     return ids, docs, metadatas
 

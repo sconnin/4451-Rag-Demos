@@ -17,6 +17,11 @@ def retrieve(collection: Collection, subqueries: list[str],
         res = collection.query(query_texts=[sq], n_results=n_results)
         docs = res.get("documents", [[]])[0]
         metadatas = res.get("metadatas", [[]])[0]
+        if len(metadatas) != len(docs):
+            raise ValueError(
+                f"Chroma returned {len(docs)} documents but {len(metadatas)} metadatas "
+                f"for sub-query {sq!r}; results would be misaligned."
+            )
         unique = []
         for doc, metadata in zip(docs, metadatas):
             if doc not in seen:
