@@ -1,5 +1,5 @@
 """Text chunking utilities."""
-from rag.config import CHUNK_OVERLAP, CHUNK_SIZE
+from core.config import CHUNK_OVERLAP, CHUNK_SIZE
 
 
 def chunk_text(text: str, chunk_size: int = CHUNK_SIZE, overlap: int = CHUNK_OVERLAP) -> list[str]:

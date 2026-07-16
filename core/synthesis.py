@@ -1,7 +1,7 @@
 """Synthesize a final answer from retrieved context across all sub-queries."""
 from openai import OpenAI
 
-from rag.config import MODEL
+from core.config import MODEL
 
 
 def _citation_label(metadata: dict) -> str:

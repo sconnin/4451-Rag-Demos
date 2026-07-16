@@ -3,7 +3,7 @@ import json
 
 from openai import OpenAI
 
-from rag.config import MODEL
+from core.config import MODEL
 
 DECOMPOSE_SCHEMA = {
     "name": "decompose_query",

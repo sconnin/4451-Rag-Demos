@@ -2,8 +2,8 @@
 import argparse
 import sys
 
-from rag.config import DEFAULT_DB_PATH, collection_name
-from rag.pipeline import run
+from core.config import DEFAULT_DB_PATH, collection_name
+from core.pipeline import run
 
 
 def main() -> None:

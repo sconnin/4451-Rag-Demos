@@ -1,10 +1,10 @@
 """Load .txt documents from a directory and upsert them into a Chroma collection."""
 import os
 
-from rag.chunking import chunk_text
-from rag.config import DEFAULT_COLLECTION, DEFAULT_DB_PATH, DEFAULT_DOCS_DIR
-from rag.store import get_collection
-from rag.structured_chunking import chunk_document
+from core.chunking import chunk_text
+from core.config import DEFAULT_COLLECTION, DEFAULT_DB_PATH, DEFAULT_DOCS_DIR
+from core.store import get_collection
+from core.structured_chunking import chunk_document
 
 CHUNKING_STRATEGIES = ("fixed", "structured")
 

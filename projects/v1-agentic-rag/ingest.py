@@ -2,8 +2,8 @@
 import argparse
 import sys
 
-from rag.config import DEFAULT_DB_PATH, DEFAULT_DOCS_DIR, collection_name
-from rag.ingestion import CHUNKING_STRATEGIES, ingest
+from core.config import DEFAULT_DB_PATH, DEFAULT_DOCS_DIR, collection_name
+from core.ingestion import CHUNKING_STRATEGIES, ingest
 
 
 def main() -> None:

@@ -1,0 +1,12 @@
+[project]
+name = "core"
+version = "0.1.0"
+description = "Shared RAG engine (chunking, ingestion, retrieval, synthesis) used by all versioned projects in this monorepo."
+requires-python = ">=3.10"
+
+[tool.setuptools]
+packages = ["core"]
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"

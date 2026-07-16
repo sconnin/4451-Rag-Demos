@@ -1,11 +1,11 @@
 """Agentic RAG orchestration: decompose -> retrieve -> synthesize."""
 from openai import OpenAI
 
-from rag.config import DEFAULT_COLLECTION, DEFAULT_DB_PATH
-from rag.decompose import decompose_query
-from rag.retrieval import retrieve
-from rag.store import get_collection
-from rag.synthesis import synthesize
+from core.config import DEFAULT_COLLECTION, DEFAULT_DB_PATH
+from core.decompose import decompose_query
+from core.retrieval import retrieve
+from core.store import get_collection
+from core.synthesis import synthesize
 
 
 def run(query: str, db_path: str = DEFAULT_DB_PATH,

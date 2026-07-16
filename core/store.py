@@ -2,7 +2,7 @@
 import chromadb
 from chromadb.api.models.Collection import Collection
 
-from rag.config import DEFAULT_COLLECTION, DEFAULT_DB_PATH
+from core.config import DEFAULT_COLLECTION, DEFAULT_DB_PATH
 
 
 def get_collection(db_path: str = DEFAULT_DB_PATH,
