@@ -2,7 +2,7 @@
 import argparse
 import sys
 
-from rag.config import DEFAULT_COLLECTION, DEFAULT_DB_PATH, DEFAULT_DOCS_DIR
+from rag.config import DEFAULT_DB_PATH, DEFAULT_DOCS_DIR, collection_name
 from rag.ingestion import CHUNKING_STRATEGIES, ingest
 
 
@@ -11,14 +11,19 @@ def main() -> None:
     parser.add_argument("docs_dir", nargs="?", default=DEFAULT_DOCS_DIR,
                          help=f"Directory of .txt files (default: {DEFAULT_DOCS_DIR})")
     parser.add_argument("--db-path", default=DEFAULT_DB_PATH, help="Chroma persistent storage path")
-    parser.add_argument("--collection", default=DEFAULT_COLLECTION, help="Chroma collection name")
+    parser.add_argument("--collection", default=None,
+                         help="Chroma collection name (default: '<documents>_<chunking>', "
+                              "e.g. 'documents_fixed' or 'documents_structured', so different "
+                              "chunking strategies never share a collection)")
     parser.add_argument("--chunking", choices=CHUNKING_STRATEGIES, default="fixed",
                          help="Chunking strategy: 'fixed' (baseline, default) or "
                               "'structured' (section/clause-aware)")
     args = parser.parse_args()
 
+    collection = args.collection or collection_name(args.chunking)
+
     try:
-        count = ingest(args.docs_dir, args.db_path, args.collection, args.chunking)
+        count = ingest(args.docs_dir, args.db_path, collection, args.chunking)
     except FileNotFoundError as e:
         print(f"Error: {e}")
         sys.exit(1)
@@ -28,7 +33,7 @@ def main() -> None:
         return
 
     print(f"Ingested {count} chunks from '{args.docs_dir}' into collection "
-          f"'{args.collection}' at '{args.db_path}'.")
+          f"'{collection}' at '{args.db_path}'.")
 
 
 if __name__ == "__main__":

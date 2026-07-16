@@ -30,10 +30,33 @@ This chunks each file and upserts it into a persistent Chroma collection at
 `./chroma_db` (using Chroma's built-in local embedding model — no embedding
 API key required).
 
+Two chunking strategies are available via `--chunking`:
+
+- `fixed` (default) — baseline fixed-width chunking (`rag/chunking.py`)
+- `structured` — section/clause-aware chunking (`rag/structured_chunking.py`)
+
+Each strategy writes to its own Chroma collection by default
+(`documents_fixed` / `documents_structured`), so re-ingesting the same docs
+with a different strategy never overwrites or mixes chunks from the other:
+
+```bash
+python ingest.py ./data --chunking fixed
+python ingest.py ./data --chunking structured
+```
+
+Pass `--collection` to override the default name for either strategy.
+
 ### Ask a question
 
 ```bash
 python rag_agent.py "your complex, multi-part question"
+```
+
+Queries `documents_fixed` by default. To query the structured-chunking
+collection instead:
+
+```bash
+python rag_agent.py "your question" --collection documents_structured
 ```
 
 Or run without an argument to be prompted interactively. The script prints

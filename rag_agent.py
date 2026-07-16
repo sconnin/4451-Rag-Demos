@@ -2,7 +2,7 @@
 import argparse
 import sys
 
-from rag.config import DEFAULT_COLLECTION, DEFAULT_DB_PATH
+from rag.config import DEFAULT_DB_PATH, collection_name
 from rag.pipeline import run
 
 
@@ -10,8 +10,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Agentic RAG query over a Chroma collection.")
     parser.add_argument("query", nargs="?", help="The question to ask")
     parser.add_argument("--db-path", default=DEFAULT_DB_PATH)
-    parser.add_argument("--collection", default=DEFAULT_COLLECTION)
+    parser.add_argument("--collection", default=None,
+                         help="Chroma collection to query (default: 'documents_fixed', matching "
+                              "ingest.py's default chunking strategy; pass 'documents_structured' "
+                              "to query docs ingested with --chunking structured)")
     args = parser.parse_args()
+
+    collection = args.collection or collection_name("fixed")
 
     query = args.query
     if not query:
@@ -24,7 +29,7 @@ def main() -> None:
         print("No query provided.")
         sys.exit(1)
 
-    answer = run(query, args.db_path, args.collection)
+    answer = run(query, args.db_path, collection)
     print(answer)
 
 
