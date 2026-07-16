@@ -3,7 +3,7 @@ import argparse
 import sys
 
 from rag.config import DEFAULT_COLLECTION, DEFAULT_DB_PATH, DEFAULT_DOCS_DIR
-from rag.ingestion import ingest
+from rag.ingestion import CHUNKING_STRATEGIES, ingest
 
 
 def main() -> None:
@@ -12,10 +12,13 @@ def main() -> None:
                          help=f"Directory of .txt files (default: {DEFAULT_DOCS_DIR})")
     parser.add_argument("--db-path", default=DEFAULT_DB_PATH, help="Chroma persistent storage path")
     parser.add_argument("--collection", default=DEFAULT_COLLECTION, help="Chroma collection name")
+    parser.add_argument("--chunking", choices=CHUNKING_STRATEGIES, default="fixed",
+                         help="Chunking strategy: 'fixed' (baseline, default) or "
+                              "'structured' (section/clause-aware)")
     args = parser.parse_args()
 
     try:
-        count = ingest(args.docs_dir, args.db_path, args.collection)
+        count = ingest(args.docs_dir, args.db_path, args.collection, args.chunking)
     except FileNotFoundError as e:
         print(f"Error: {e}")
         sys.exit(1)
